@@ -18,6 +18,7 @@ import json
 
 serialLock = threading.Lock()
 
+#TODO: Change this to the correct port
 ser = serial.Serial("/dev/cu.usbserial-02X2K2GE", 1000000, write_timeout=1, )
 
 app = Flask(__name__)
