@@ -9,8 +9,10 @@ import time
 import numpy as np
 import cv2 as cv
 from KalmanFilter import KalmanFilter
-from pseyepy import Camera
+# from pseyepy import Camera
 from Singleton import Singleton
+
+from IrCamera import IrCamera
 
 
 @Singleton
@@ -21,8 +23,10 @@ class Cameras:
         f = open(filename)
         self.camera_params = json.load(f)
 
-        self.cameras = Camera(fps=90, resolution=Camera.RES_SMALL, gain=10, exposure=100)
-        self.num_cameras = len(self.cameras.exposure)
+        # self.cameras = Camera(fps=90, resolution=Camera.RES_SMALL, gain=10, exposure=100)
+        # self.num_cameras = len(self.cameras.exposure)
+        self.cameras = IrCamera(resolution=(320, 240), fps=120)
+        self.num_cameras = len(self.cameras.ids)
         print(self.num_cameras)
 
         self.is_capturing_points = False
@@ -62,11 +66,14 @@ class Cameras:
         self.drone_armed = [False for i in range(0, self.num_objects)]
     
     def edit_settings(self, exposure, gain):
-        self.cameras.exposure = [exposure] * self.num_cameras
-        self.cameras.gain = [gain] * self.num_cameras
+        # self.cameras.exposure = [exposure] * self.num_cameras
+        # self.cameras.gain = [gain] * self.num_cameras
+        self.cameras.set_exposure(exposure)
+        self.cameras.set_gain(gain)
 
     def _camera_read(self):
-        frames, _ = self.cameras.read()
+        # frames, _ = self.cameras.read()
+        frames = self.cameras.read()
 
         for i in range(0, self.num_cameras):
             frames[i] = np.rot90(frames[i], k=self.camera_params[i]["rotation"])

@@ -1,6 +1,3 @@
-from helpers import camera_pose_to_serializable, calculate_reprojection_errors, bundle_adjustment, Cameras, triangulate_points
-from KalmanFilter import KalmanFilter
-
 from flask import Flask, Response, request
 import cv2 as cv
 import numpy as np
@@ -16,10 +13,14 @@ from ruckig import InputParameter, OutputParameter, Result, Ruckig
 from flask_cors import CORS
 import json
 
+from helpers import camera_pose_to_serializable, calculate_reprojection_errors, bundle_adjustment, Cameras, triangulate_points
+from KalmanFilter import KalmanFilter
+
 serialLock = threading.Lock()
 
-#TODO: Change this to the correct port
-ser = serial.Serial("/dev/cu.usbserial-02X2K2GE", 1000000, write_timeout=1, )
+#TODO: Change this to the correct port for ESP32
+# ser = serial.Serial("/dev/ttyUSB1", 1000000, write_timeout=1, )
+ser = None
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)

@@ -5,7 +5,9 @@
 #include <PID_v1.h>
 #include <stdint.h>
 #include <EEPROM.h>
-#include "sbus.h"
+
+// For rotor of drone
+// #include "sbus.h"
 
 #define batVoltagePin 34
 #define MAX_VEL 100

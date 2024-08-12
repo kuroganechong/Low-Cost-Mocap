@@ -5,7 +5,7 @@ fourcc = cv2.VideoWriter_fourcc(*'MJPG')
 # Open the default camera
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FOURCC, fourcc)
-cap.set(cv2.CAP_PROP_FPS, 120.0)
+cap.set(cv2.CAP_PROP_FPS, 30.0)
 
 # Define the codec and create a VideoWriter object
 format = cap.get(cv2.CAP_PROP_FOURCC)
