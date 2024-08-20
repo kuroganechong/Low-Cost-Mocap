@@ -12,7 +12,7 @@ objpoints = [objp] # 3d points in real world space
 imgpoints = [] # 2d points in image plane.
 
 # Load the image
-image = cv2.imread('940nmIRcameraCalib1.jpg')
+image = cv2.imread('940nmIRcameraCalib.jpg')
 
 # Convert the frame to grayscale
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -40,6 +40,8 @@ for i in range(camera_matrix.shape[0]):
 
 mean_error = np.mean(error)
 print( "mean error: {}".format(mean_error/len(objpoints)) )
+min_error_index = np.argmin(errors)
+print("Index of minimum error:", min_error_index)
 
 # Break the loop if 'q' is pressed
 if cv2.waitKey(0) & 0xFF == ord('q'):

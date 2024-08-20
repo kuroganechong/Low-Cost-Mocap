@@ -12,19 +12,24 @@ import threading
 from ruckig import InputParameter, OutputParameter, Result, Ruckig
 from flask_cors import CORS
 import json
+import logging
 
 from helpers import camera_pose_to_serializable, calculate_reprojection_errors, bundle_adjustment, Cameras, triangulate_points
 from KalmanFilter import KalmanFilter
 
 serialLock = threading.Lock()
 
-#TODO: Change this to the correct port for ESP32
+#TODO: Disabled drone control for now
 # ser = serial.Serial("/dev/ttyUSB1", 1000000, write_timeout=1, )
 ser = None
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 socketio = SocketIO(app, cors_allowed_origins='*')
+
+# Set Flask logger to only log errors
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 cameras_init = False
 
@@ -124,37 +129,37 @@ def arm_drone(data):
         serial_data = {
             "armed": data["droneArmed"][droneIndex],
         }
-        with serialLock:
-            ser.write(f"{str(droneIndex)}{json.dumps(serial_data)}".encode('utf-8'))
+        # with serialLock:
+            # ser.write(f"{str(droneIndex)}{json.dumps(serial_data)}".encode('utf-8'))
         
-        time.sleep(0.01)
+        # time.sleep(0.01)
 
 @socketio.on("set-drone-pid")
 def arm_drone(data):
     serial_data = {
         "pid": [float(x) for x in data["dronePID"]],
     }
-    with serialLock:
-        ser.write(f"{str(data['droneIndex'])}{json.dumps(serial_data)}".encode('utf-8'))
-        time.sleep(0.01)
+    # with serialLock:
+        # ser.write(f"{str(data['droneIndex'])}{json.dumps(serial_data)}".encode('utf-8'))
+        # time.sleep(0.01)
 
 @socketio.on("set-drone-setpoint")
 def arm_drone(data):
     serial_data = {
         "setpoint": [float(x) for x in data["droneSetpoint"]],
     }
-    with serialLock:
-        ser.write(f"{str(data['droneIndex'])}{json.dumps(serial_data)}".encode('utf-8'))
-        time.sleep(0.01)
+    # with serialLock:
+        # ser.write(f"{str(data['droneIndex'])}{json.dumps(serial_data)}".encode('utf-8'))
+        # time.sleep(0.01)
 
 @socketio.on("set-drone-trim")
 def arm_drone(data):
     serial_data = {
         "trim": [int(x) for x in data["droneTrim"]],
     }
-    with serialLock:
-        ser.write(f"{str(data['droneIndex'])}{json.dumps(serial_data)}".encode('utf-8'))
-        time.sleep(0.01)
+    # with serialLock:
+        # ser.write(f"{str(data['droneIndex'])}{json.dumps(serial_data)}".encode('utf-8'))
+        # time.sleep(0.01)
 
 
 @socketio.on("acquire-floor")

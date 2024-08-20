@@ -11,10 +11,21 @@ objp[:,:2] = np.mgrid[0:9,0:6].T.reshape(-1,2)
 
 objpoints = [] # 3d points in real world space
 imgpoints = [] # 2d points in image plane.
-
+# Empty out the csv files
+with open('camera_matrix.csv', 'w') as file:
+    file.truncate(0)
+with open('dist.csv', 'w') as file:
+    file.truncate(0)
+with open('rvecs.csv', 'w') as file:
+    file.truncate(0)
+with open('tvecs.csv', 'w') as file:
+    file.truncate(0)
 while True:
     # Create a VideoCapture object to open the webcam
-    cap = cv2.VideoCapture(0)
+    # cap = cv2.VideoCapture(0)
+    # cap = cv2.VideoCapture(2)
+    # cap = cv2.VideoCapture(4)
+    cap = cv2.VideoCapture(6)
     # Read the current frame from the webcam
     ret, frame = cap.read()
     # release the VideoCapture object

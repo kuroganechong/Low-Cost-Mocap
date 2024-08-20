@@ -1,0 +1,16 @@
+First, prepare a chessboard in front of the camera. Must be lit, 9x6
+
+Use captureimage.py to generate a calibration image file. Make sure to select the correct camera in code, and Press Q to capture image
+
+Then, run cameraCalibration.py and dance the chessboard in front of the camera. Make sure to select the correct camera in code, collect about 20 samples
+
+After that, use reprojectionError.py to verify the undistort looks good on the calibration image file.
+
+Finally, copy the last entry in each of the four csv file into bestParams.py for record purposes.
+
+These params for each camera will be input into the camera-params.json for the main project
+
+[{"R":[[1,0,0],[0,1,0],[0,0,1]],"t":[0,0,0]},
+ {"R":[[-0.7989306219232255,0.6000208504803353,0.04104680672382406],[0.5873165058507872,0.7636769284927558,0.2680613191847944],[0.12949588143485524,0.23826986355123705,-0.9625270327708644]],"t":[-196.72436577060554,128.32353132522098,-35.76053415884208]},
+ {"R":[[-0.05033954322740759,-0.14382362811113636,0.9883221612331705],[-0.8820458245735913,-0.4577700641460071,-0.11154251083803701],[0.4684667477419812,-0.8773604346952908,-0.10381509471816179]],"t":[-192.25154119626654,-431.0872357135689,-447.2928383394004]},
+ {"R":[[0.8141738204614457,0.3662750244481922,-0.4505148127872044],[-0.5785599952339642,0.5771065762701438,-0.5763821055000129],[0.04888069138309059,0.7299250688195529,0.6817771424143538]],"t":[451.8290658294613,27.244886949005597,74.59613788735984]}]
