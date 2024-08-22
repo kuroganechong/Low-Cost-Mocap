@@ -1,0 +1,16 @@
+Imagine a problem: We have multiple cameras, capturing an object in world space (x,y,z). Each camera i will capture the object at pixel position (u_xi,u_yi).
+
+Let's assume the object is a single marker which is represented as a single bright pixel in each camera. So, we can easily know the pixel positions (u_x, u_y) in each camera. How to convert this to the world position?
+
+To solve this problem, first we need to understand the relationship between the world coordinates and the camera pixel coordinates. This is unique for each camera, and if we assume the camera is linear and simple (no distortions), turns out there is a straightforward relationship represented by the equation below:
+u = P * x = Mi * Me * x ------------ (1)
+where P is the 3x3 projection matrix, and is composed of Mi and Me, which are the intrinsic and extrinsic matrices of the camera.
+
+The 3x3 intrinsic matrix is formed by the xy focal lengths, and the xy pixel coordinates offset from the optical center (The camera optical center is at the center of the image, but pixels are usually numbered (0, 0) from the top left -- this is represented by the offset)
+
+The 3x3 extrinsic matrix is formed by the Rotation matrix and translation vector of the camera compared to an external world coordinates frame, so it is affected when the camera is moved through the 3D space relative to another frame (another camera, for example).
+
+So, if we find P, we can locate the pixel coordinates directly to the 3D world. Note that P is actually defined up to a scale, which means that P still holds if everything in the world is scaled by a factor of k (which also means that we need to calibrate the scale afterwards, using a known metric distance).
+
+How do we find P?
+There are two methods. The first method assumes we have an object of known geometry, which we know the xyz position of. Using equation (1), we can easily plug in u and x.
