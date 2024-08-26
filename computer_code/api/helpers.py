@@ -206,7 +206,7 @@ class Cameras:
         if distortion_coef is not None:
             self.camera_params[camera_num]["distortion_coef"] = distortion_coef
 
-
+# Run calculate_reprojection_error for each pair of image points and object points
 def calculate_reprojection_errors(image_points, object_points, camera_poses):
     errors = np.array([])
     for image_points_i, object_point in zip(image_points, object_points):
