@@ -12,5 +12,45 @@ The 3x3 extrinsic matrix is formed by the Rotation matrix and translation vector
 
 So, if we find P, we can locate the pixel coordinates directly to the 3D world. Note that P is actually defined up to a scale, which means that P still holds if everything in the world is scaled by a factor of k (which also means that we need to calibrate the scale afterwards, using a known metric distance).
 
-How do we find P?
-There are two methods. The first method assumes we have an object of known geometry, which we know the xyz position of. Using equation (1), we can easily plug in u and x.
+How do we find P? Let's assume we have an object of known geometry, which we know the xyz position of. Now, as P is independent from the world scale, we can actually use relative positions for xyz, and multiply by scale later on. Using equation (1), we can easily plug in u and x. Reorder the linear equations into a format and define the scale such that 
+Ap = 0 --------------(2) 
+||p||² = 1 ----------(3)
+where A is the known coefficients formed by u and x, and p is a one-column vector formed by elements in P. To solve (2), we use the least-squares method then find the minimum of the left-hand side. In order words, we can define the loss function to be 
+L = p'A'Ap - λ(p'p - 1) -------------- (4)
+Minimum L wrt p occurs when derivative is 0, so we get 
+A'Ap = λp -----------(5)
+Minimum L is obtained for smallest λ eigenvalue of A'A. Correspondingly the eigenvector p is obtained, which we can rearrange to P.
+From P, we can extract the intrinsics and extrinsics of the camera and use it for subsequent positioning.
+
+It is important to note that as the camera moves through space, P is changed due to the change in extrinsic matrix. In practice, we usually use a checkerboard as the object to perform the calibration, and obtain the intrinsic camera matrix which is unique for each camera. This calibrated matrix is vital for the next step in multiple camera positioning.
+
+Solving for multiple camera positioning
+For the next scenario, let's say we do not have an object of known geometry. Instead, we have two or more cameras pointing at the same object from different world positions. We do not know the camera positions, however we do know the intrinsics of each camera (using the previous method). In order to get the position of the object as well as the cameras, we first identify the feature correspondence between images (using algorithms like SIFT). Now, for each pair of cameras, the pixel points u1 and u2, along with the optical centers of the camera o1 and o2, and the object point P, can form a triangular plane called epipolar plane.
+
+Let x1 be the vector pointing from u1 to the point P, and t be the vector from o1 to o2. As t, x1 lies on the epipolar plane, we can write the epipolar constraint as below
+x1 · (t ⨯ x1) = 0 -------------(6) 
+Now, let x2 be the vector from u2 to P. We can form a relationship between x1 and x2 using the relative rotation and translation of the cameras
+x1 = Rx2 + t ------------------(7)
+where t = position of camera 2 in camera 1 frame, and R = orientation of camera 1 in camera 2 frame
+combining equation (6) and (7) we obtain the Essential Matrix, E
+E = TR ------------------(8)
+where T is a 3x3 matrix obtained from (6) and formed by t. And combining (6) - (9) we obtain the formula
+x1'Ex2 = 0 --------------(9)
+To solve (9) we need x1 and x2, however we do not have the real position, instead we have the projections on the camera u1 and u2. Using (1) again and letting K = [Mi | 0] as a 4x3 matrix, we can form a relationship between x and u
+x1' = u' z1 K1⁻¹' ---------(10)
+x2 = K2⁻¹ z2 u2 -----------(11)
+z1 and z2 are the depths of the object from each camera, and is always physically larger than 0. Combining (9) - (11), we get the equation
+u1' K1⁻¹' E K2⁻¹ u2 = 0 ---(12)
+and we can get the Fundamental Matrix, F and form the final equation
+F = K1⁻¹' E K2⁻¹ ----------(13)
+u1' F u2 = 0 --------------(14)
+Note that similar to P from the first part (equation (1)), F is independent from scale so we need to calibrate the scale separately afterwards. 
+
+Now with the math done, how do we do this in practice?  First, we identify the corresponding features as mentioned above. For each features, write the epipolar constraint in equation (14) and solve for F using least-squares method. From F we can then extract the translation (t) and rotation (R) of camera 2 wrt camera 1. Next, to find the dense correspondence of each pixels of two camera views (corresponding u2 to u1), we can define the epipolar line from (14) as
+a1u2 + b1v2 + c1 = 0 -------(15) where u2 and v2 are the pixel coordinates in camera 2.
+Use template matching to find the dense correspondence.
+Lastly, to identify the object position from each camera, we can use the relationships between u1 and u2 established above to get
+u1 = P1 x2 --------(15)
+u2 = Mi2 x2 -------(16)
+and reorder into Ax2 = b and solve for x2 using least-squares method. Repeat this for each pixel point and each camera pairs, and finally we will have solved the problem of multiple camera positioning! 
+
