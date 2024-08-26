@@ -25,9 +25,12 @@ class Cameras:
 
         # self.cameras = Camera(fps=90, resolution=Camera.RES_SMALL, gain=10, exposure=100)
         # self.num_cameras = len(self.cameras.exposure)
-        self.cameras = IrCamera(resolution=(320, 240), fps=120)
+        self.cameras = IrCamera(resolution=(640, 480), fps=120)
         self.num_cameras = len(self.cameras.ids)
         print(self.num_cameras)
+
+        self.toggle_capture_on = False
+        self.single_capture = False
 
         self.is_capturing_points = False
 
@@ -71,6 +74,12 @@ class Cameras:
         self.cameras.set_exposure(exposure)
         self.cameras.set_gain(gain)
 
+    def set_toggle_capture_on(self):
+        self.toggle_capture_on = not self.toggle_capture_on
+
+    def set_single_capture(self):
+        self.single_capture = True
+
     def _camera_read(self):
         # frames, _ = self.cameras.read()
         frames = self.cameras.read()
@@ -88,7 +97,8 @@ class Cameras:
             frames[i] = cv.filter2D(frames[i], -1, kernel)
             frames[i] = cv.cvtColor(frames[i], cv.COLOR_RGB2BGR)
 
-        if (self.is_capturing_points):
+        if (self.is_capturing_points and (self.toggle_capture_on or self.single_capture)):
+            self.single_capture = False
             image_points = []
             for i in range(0, self.num_cameras):
                 frames[i], single_camera_image_points = self._find_dot(frames[i])

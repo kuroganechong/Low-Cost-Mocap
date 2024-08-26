@@ -126,6 +126,20 @@ def change_camera_settings(data):
     
     cameras.edit_settings(data["exposure"], data["gain"])
 
+@socketio.on("toggle-capture-on")
+def toggle_capture_on(data):
+    cameras = Cameras.instance()
+    
+    cameras.set_toggle_capture_on()
+
+
+@socketio.on("single-capture")
+def toggle_capture_on(data):
+    cameras = Cameras.instance()
+    
+    cameras.set_single_capture()
+
+
 @socketio.on("capture-points")
 def capture_points(data):
     start_or_stop = data["startOrStop"]
