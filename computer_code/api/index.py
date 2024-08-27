@@ -90,6 +90,15 @@ def acquire_floor(data):
 
     plane = np.array([fit[0], fit[1], -1, fit[2]])
 
+    # After finding the best fit plane, we need to find the rotation matrix that aligns the plane with the xy plane
+    # Another method: find angle and axis
+    # Axis of rotation obtained by cross product of plane normal and up normal
+    # TODO: Check if this is correct
+    # axis_of_rotation = np.array([-plane_normal[1], plane_normal[0], [0]])
+    # axis_of_rotation = axis_of_rotation / linalg.norm(axis_of_rotation)
+    # angle = np.arccos(plane_normal[2] / linalg.norm(plane_normal))
+    # R = cv.Rodrigues(axis_of_rotation * angle)[0]
+
     # https://math.stackexchange.com/a/897677/1012327
     G = np.array([
         [np.dot(plane_normal.T,up_normal)[0][0], -linalg.norm(np.cross(plane_normal.T[0],up_normal.T[0])), 0],
