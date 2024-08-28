@@ -9,7 +9,6 @@ import time
 import numpy as np
 import cv2 as cv
 from KalmanFilter import KalmanFilter
-# from pseyepy import Camera
 from Singleton import Singleton
 
 from IrCamera import IrCamera
@@ -17,15 +16,20 @@ from IrCamera import IrCamera
 
 @Singleton
 class Cameras:
-    def __init__(self):
+    def __init__(self,resolution=(640, 480),fps=120):
+        # Camera params is valid for certain camera resolution
+        # Make sure the order of params is same as the order of camera ids
+        # Also, the rotation is in 90 degrees steps
+        res = "{}x{}".format(resolution[0], resolution[1])
         dirname = os.path.dirname(__file__)
-        filename = os.path.join(dirname, "camera-params.json")
+        paramsname = "camera-params-{}.json".format(res)
+        filename = os.path.join(dirname, paramsname)
         f = open(filename)
         self.camera_params = json.load(f)
 
         # self.cameras = Camera(fps=90, resolution=Camera.RES_SMALL, gain=10, exposure=100)
         # self.num_cameras = len(self.cameras.exposure)
-        self.cameras = IrCamera(resolution=(640, 480), fps=120)
+        self.cameras = IrCamera(resolution=resolution, fps=fps)
         self.num_cameras = len(self.cameras.ids)
         print(self.num_cameras)
 
@@ -153,10 +157,15 @@ class Cameras:
 
     def get_frames(self):
         frames = self._camera_read()
-        #frames = [add_white_border(frame, 5) for frame in frames]
+        frames = [add_white_border(frame, 5) for frame in frames]
 
-        return np.hstack(frames)
+        num_frames = len(frames)
+        num_rows = int(np.sqrt(num_frames))
+        num_cols = int(np.ceil(num_frames / num_rows))
 
+        stacked_frames = np.vstack([np.hstack(frames[i:i+num_cols]) for i in range(0, num_frames, num_cols)])
+        return stacked_frames
+    
     def _find_dot(self, img):
         # img = cv.GaussianBlur(img,(5,5),0)
         grey = cv.cvtColor(img, cv.COLOR_RGB2GRAY)
@@ -439,8 +448,8 @@ def find_point_correspondance_and_object_points(image_points, camera_poses, fram
 
 
 def locate_objects(object_points, errors):
-    dist1 = 0.095
-    dist2 = 0.15
+    dist1 = 0.035
+    dist2 = 0.027
 
     distance_matrix = np.zeros((object_points.shape[0], object_points.shape[0]))
     already_matched_points = []

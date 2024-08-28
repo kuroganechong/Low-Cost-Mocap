@@ -47,7 +47,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Drone Position',
+      text: 'Object Position',
     },
   },
   scales: {
@@ -55,16 +55,16 @@ export const options = {
       type: 'linear',
       position: 'left',
     }, 
-    B: {
-      type: 'linear',
-      position: 'left',
-      max: Math.PI/2,
-      min: -Math.PI/2
-    }, 
-    C: {
-      type: 'linear',
-      position: 'left'
-    }
+    // B: {
+    //   type: 'linear',
+    //   position: 'left',
+    //   max: Math.PI/2,
+    //   min: -Math.PI/2
+    // }, 
+    // C: {
+    //   type: 'linear',
+    //   position: 'left'
+    // }
   },
   elements: {
     point: {
@@ -96,77 +96,78 @@ let dataTemplate: ChartData<"line", number[], number> = {
       borderColor: 'rgb(0, 0, 255)',
       backgroundColor: 'rgba(0, 0, 255, 0.5)',
       yAxisID: "A",
-    },
-    {
-      label: 'YAW',
-      data: [] as number[],
-      borderColor: 'rgb(128, 128, 128)',
-      backgroundColor: 'rgba(128, 128, 128, 0.5)',
-      yAxisID: "B"
-    },
-    {
-      label: 'X Vel',
-      data: [] as number[],
-      borderColor: 'rgb(220, 220, 0)',
-      backgroundColor: 'rgba(220, 220, 0, 0.5)',
-      yAxisID: "C"
-    },
-    {
-      label: 'Y Vel',
-      data: [] as number[],
-      borderColor: 'rgb(0, 220, 220)',
-      backgroundColor: 'rgba(0, 220, 220, 0.5)',
-      yAxisID: "C"
-    },
-    {
-      label: 'Z Vel',
-      data: [] as number[],
-      borderColor: 'rgb(220, 0, 220)',
-      backgroundColor: 'rgba(220, 0, 220, 0.5)',
-      yAxisID: "C"
-    },
-    {
-      label: 'X Setpoint',
-      data: [] as number[],
-      borderColor: 'rgb(128, 0, 0)',
-      backgroundColor: 'rgba(128, 0, 0, 0.5)',
-      yAxisID: "A"
-    },
-    {
-      label: 'Y Setpoint',
-      data: [] as number[],
-      borderColor: 'rgb(0, 128, 0)',
-      backgroundColor: 'rgba(0, 128, 0, 0.5)',
-      yAxisID: "A",
-    },
-    {
-      label: 'Z Setpoint',
-      data: [] as number[],
-      borderColor: 'rgb(0, 0, 128)',
-      backgroundColor: 'rgba(0, 0, 128, 0.5)',
-      yAxisID: "A"
-    },
-    {
-      label: 'X Vel Setpoint',
-      data: [] as number[],
-      borderColor: 'rgb(128, 128, 0)',
-      backgroundColor: 'rgba(128, 128, 0, 0.5)',
-      yAxisID: "C"
-    },
-    {
-      label: 'Y Vel Setpoint',
-      data: [] as number[],
-      borderColor: 'rgb(0, 128, 128)',
-      backgroundColor: 'rgba(0, 128, 128, 0.5)',
-      yAxisID: "C"
-    },
-    {
-      label: 'Z Vel Setpoint',
-      data: [] as number[],
-      borderColor: 'rgb(128, 0, 128)',
-      backgroundColor: 'rgba(128, 0, 128, 0.5)',
-      yAxisID: "C"
-    },
+    }
+  //,
+  //   {
+  //     label: 'YAW',
+  //     data: [] as number[],
+  //     borderColor: 'rgb(128, 128, 128)',
+  //     backgroundColor: 'rgba(128, 128, 128, 0.5)',
+  //     yAxisID: "B"
+  //   },
+  //   {
+  //     label: 'X Vel',
+  //     data: [] as number[],
+  //     borderColor: 'rgb(220, 220, 0)',
+  //     backgroundColor: 'rgba(220, 220, 0, 0.5)',
+  //     yAxisID: "C"
+  //   },
+  //   {
+  //     label: 'Y Vel',
+  //     data: [] as number[],
+  //     borderColor: 'rgb(0, 220, 220)',
+  //     backgroundColor: 'rgba(0, 220, 220, 0.5)',
+  //     yAxisID: "C"
+  //   },
+  //   {
+  //     label: 'Z Vel',
+  //     data: [] as number[],
+  //     borderColor: 'rgb(220, 0, 220)',
+  //     backgroundColor: 'rgba(220, 0, 220, 0.5)',
+  //     yAxisID: "C"
+  //   },
+  //   {
+  //     label: 'X Setpoint',
+  //     data: [] as number[],
+  //     borderColor: 'rgb(128, 0, 0)',
+  //     backgroundColor: 'rgba(128, 0, 0, 0.5)',
+  //     yAxisID: "A"
+  //   },
+  //   {
+  //     label: 'Y Setpoint',
+  //     data: [] as number[],
+  //     borderColor: 'rgb(0, 128, 0)',
+  //     backgroundColor: 'rgba(0, 128, 0, 0.5)',
+  //     yAxisID: "A",
+  //   },
+  //   {
+  //     label: 'Z Setpoint',
+  //     data: [] as number[],
+  //     borderColor: 'rgb(0, 0, 128)',
+  //     backgroundColor: 'rgba(0, 0, 128, 0.5)',
+  //     yAxisID: "A"
+  //   },
+  //   {
+  //     label: 'X Vel Setpoint',
+  //     data: [] as number[],
+  //     borderColor: 'rgb(128, 128, 0)',
+  //     backgroundColor: 'rgba(128, 128, 0, 0.5)',
+  //     yAxisID: "C"
+  //   },
+  //   {
+  //     label: 'Y Vel Setpoint',
+  //     data: [] as number[],
+  //     borderColor: 'rgb(0, 128, 128)',
+  //     backgroundColor: 'rgba(0, 128, 128, 0.5)',
+  //     yAxisID: "C"
+  //   },
+  //   {
+  //     label: 'Z Vel Setpoint',
+  //     data: [] as number[],
+  //     borderColor: 'rgb(128, 0, 128)',
+  //     backgroundColor: 'rgba(128, 0, 128, 0.5)',
+  //     yAxisID: "C"
+  //   },
   ],
 };
 
@@ -259,5 +260,5 @@ export default function Chart({filteredObjectsRef, droneSetpointHistoryRef, obje
     }
   }, [droneArmed, currentDroneIndex])
 
-  return <Line ref={chartRef} options={options} data={data} height={"50px"}/>;
+  return <Line ref={chartRef} options={options} data={data} height={"100px"}/>;
 }

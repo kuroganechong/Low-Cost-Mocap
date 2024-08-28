@@ -42,10 +42,11 @@ export default function App() {
   const [fps, setFps] = useState(0);
 
   // const [cameraPoses, setCameraPoses] = useState<Array<object>>([{ "R": [[1, 0, 0], [0, 1, 0], [0, 0, 1]], "t": [0, 0, 0] }, { "R": [[-0.0008290000610233772, -0.7947131755287576, 0.6069845808584402], [0.7624444396180684, 0.3922492478955913, 0.5146056781855716], [-0.6470531579819294, 0.46321862674804054, 0.6055994671226776]], "t": [-2.6049886186449047, -2.173986915510569, 0.7303458563542193] }, { "R": [[-0.9985541623963866, -0.028079891357569067, -0.045837806036037466], [-0.043210651917521686, -0.08793122558361385, 0.9951888962042462], [-0.03197537054848707, 0.995730696156702, 0.0865907408997996]], "t": [0.8953888630067902, -3.4302652822708373, 3.70967106300893] }, { "R": [[-0.4499864100408215, 0.6855400696798954, -0.5723172578577878], [-0.7145273934510732, 0.10804105689305427, 0.6912146801345055], [0.5356891214002657, 0.7199735709654319, 0.4412201517663212]], "t": [2.50141072072536, -2.313616767292231, 1.8529907514099284] }])
-  const [cameraPoses, setCameraPoses] = useState<Array<object>>([{"R":[[1,0,0],[0,1,0],[0,0,1]],"t":[0,0,0]},{"R":[[-0.29671489108136645,0.8179343442647666,-0.49289317492002155],[-0.4953064553334245,0.3094734658139127,0.811725131594534],[0.8164752223525287,0.4849841053367534,0.3133027750517024]],"t":[1.8308404024871139,-2.357212958870706,1.2844382249053354]},{"R":[[-0.9464891471268666,-0.19067533737706077,0.26038665497141206],[0.23417814812967558,0.1494231832434868,0.9606421327674209],[-0.22207856562399902,0.9702142175960563,-0.09677542386814819]],"t":[-1.0238860877828049,-2.685299291717799,2.7824648799989897]},{"R":[[0.34645928853497565,-0.575976997034214,0.7404164100526727],[0.6149789379483416,0.7354810988538676,0.2843738017269477],[-0.7083550432288659,0.3568165524694119,0.609027980158609]],"t":[-1.7443141182323916,-0.19713640730991322,1.4090619991963813]}]
+  const [cameraPoses, setCameraPoses] = useState<Array<object>>(
+    [{"R":[[1,0,0],[0,1,0],[0,0,1]],"t":[0,0,0]},{"R":[[-0.40560849528289317,0.7275084250721988,-0.5533653765852322],[-0.4610843981237962,0.3598806793656313,0.8111023822096372],[0.7892293243165536,0.5841381583737707,0.18947212346552667]],"t":[0.3691257698151714,-0.6926901365474062,0.35360121917128773]},{"R":[[-0.9418272731206885,-0.19718494593364627,0.2721754667547994],[0.23149938956561245,0.20648760619196713,0.9506686600071865],[-0.2436584089187089,0.9583741261043393,-0.1488274644578316]],"t":[-0.10404348796633804,-0.8314381582394181,0.9009552853154561]},{"R":[[0.5988729471428257,-0.34479698842054657,0.7228182551351257],[0.4014211194639086,0.9102394872791101,0.10161279764972986],[-0.6929735045647911,0.22930135754936998,0.6835265974321755]],"t":[-0.5538946323488616,-0.19025629553242868,0.32448195262472584]}]
   )
   const [toWorldCoordsMatrix, setToWorldCoordsMatrix] = useState<number[][]>(
-    [[-0.6600009858848743,0.6821657679975192,-0.3147198176209246,0.1263881342987655],[-0.6821657679975192,-0.7196687598474001,-0.12933190276207865,-0.2857401650668018],[0.3147198176209249,-0.12933190276207873,-0.9403322260374746,3.527912399569042],[0,0,0,1]]
+    [[-0.26166947530478474,0.9516627599903993,-0.1608324499010519,0.47450403605101366],[-0.9516627599903992,-0.2821717363545147,-0.12131406534336416,-0.04360736251575685],[0.1608324499010519,-0.12131406534336418,-0.9794977389502701,0.9528498274941962],[0,0,0,1]]
   )
 
   const [currentDroneIndex, setCurrentDroneIndex] = useState(0)
@@ -308,32 +309,32 @@ export default function App() {
 
   const wait = async (ms: number) => new Promise(r => setTimeout(r, ms))
 
-  const moveToPos = async (pos: number[], droneIndex: number) => {
-    console.log(filteredObjects.current[filteredObjects.current.length - 1][droneIndex])
-    const waypoints = [
-      filteredObjects.current[filteredObjects.current.length - 1][droneIndex]["pos"].concat([true]),
-      pos.concat([true])
-    ]
-    const setpoints = await planTrajectory(
-      waypoints,
-      trajectoryPlanningMaxVel.map(x => parseFloat(x)),
-      trajectoryPlanningMaxAccel.map(x => parseFloat(x)),
-      trajectoryPlanningMaxJerk.map(x => parseFloat(x)),
-      TRAJECTORY_PLANNING_TIMESTEP
-    )
+  // const moveToPos = async (pos: number[], droneIndex: number) => {
+  //   console.log(filteredObjects.current[filteredObjects.current.length - 1][droneIndex])
+  //   const waypoints = [
+  //     filteredObjects.current[filteredObjects.current.length - 1][droneIndex]["pos"].concat([true]),
+  //     pos.concat([true])
+  //   ]
+  //   const setpoints = await planTrajectory(
+  //     waypoints,
+  //     trajectoryPlanningMaxVel.map(x => parseFloat(x)),
+  //     trajectoryPlanningMaxAccel.map(x => parseFloat(x)),
+  //     trajectoryPlanningMaxJerk.map(x => parseFloat(x)),
+  //     TRAJECTORY_PLANNING_TIMESTEP
+  //   )
 
-    for await (const [i, setpoint] of setpoints.entries()) {
-      setpoint.map(x => x.toFixed(3))
-      socket.emit("set-drone-setpoint", { "droneSetpoint": setpoint, droneIndex })
-      setDroneSetpointWithMotion(setpoint)
+  //   for await (const [i, setpoint] of setpoints.entries()) {
+  //     setpoint.map(x => x.toFixed(3))
+  //     socket.emit("set-drone-setpoint", { "droneSetpoint": setpoint, droneIndex })
+  //     setDroneSetpointWithMotion(setpoint)
 
-      // if (land && i > 0.75*setpoints.length && filteredObjects.current[filteredObjects.current.length-1]["vel"][2] >= -0.2) {
-      //   setDroneArmed(false)
-      // }
+  //     // if (land && i > 0.75*setpoints.length && filteredObjects.current[filteredObjects.current.length-1]["vel"][2] >= -0.2) {
+  //     //   setDroneArmed(false)
+  //     // }
 
-      await wait(TRAJECTORY_PLANNING_TIMESTEP * 1000)
-    }
-  }
+  //     await wait(TRAJECTORY_PLANNING_TIMESTEP * 1000)
+  //   }
+  // }
 
   const calculateCameraPose = async (cameraPoints: Array<Array<Array<number>>>) => {
     socket.emit("calculate-camera-pose", { cameraPoints })
@@ -355,17 +356,18 @@ export default function App() {
 
   return (
     <Container fluid>
-      <Row className="mt-3 mb-3 flex-nowrap" style={{ alignItems: 'center' }}>
-        <Col className="ms-4" style={{ width: 'fit-content' }} md="auto">
-          <h2>MoCap</h2>
-        </Col>
-        <Col>
-          <Toolbar />
+      {/* Title */}
+      <Row className="pt-3" style={{ alignItems: 'center' }}>
+        <Col style={{ width: 'fit-content' }} md="auto">
+          <h3>MoCap</h3>
         </Col>
       </Row>
-      <Row>
-        <Col>
+
+      <Row className='pt-3'>
+        {/* This column contains camera and settings */}
+        <Col xs="6">
           <Card className='shadow-sm p-3'>
+            {/* Title and content for camera stream */}
             <Row>
               <Col xs="auto">
                 <h4>Camera Stream</h4>
@@ -389,18 +391,15 @@ export default function App() {
                 <img src={cameraStreamRunning ? "http://localhost:3001/api/camera-stream" : ""} />
               </Col>
             </Row>
-          </Card>
-        </Col>
-      </Row>
-      <Row className='pt-3'>
-        <Col xs={4}>
-          <Card className='shadow-sm p-3 h-100'>
+
+            {/* Title and content for camera settings */}
             <Row>
               <Col xs="auto">
                 <h4>Camera Settings</h4>
               </Col>
             </Row>
             <Row className='pt-3'>
+              {/* Exposure and Gain */}
               <Col xs="4">
                 <Form onChange={updateCameraSettings} className='ps-3'>
                   <Form.Group className="mb-1">
@@ -412,156 +411,182 @@ export default function App() {
                     <Form.Range value={gain} onChange={(event) => setGain(parseFloat(event.target.value))} />
                   </Form.Group>
                 </Form>
+
+                <Row>
+                  <Col xs="auto">
+                    <h4>Continuous Capture</h4>
+                  </Col>
+                  <Col>
+                    <Button
+                      size='sm'
+                      disabled={!cameraStreamRunning}
+                      onClick={() => {
+                        setCaptureOnToggle(!CaptureOnToggle);
+                        sendToggleCaptureOn();                      
+                      }
+                      }>
+                      {CaptureOnToggle ? "On" : "Off"}
+                    </Button>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col xs="auto">
+                    <h4>Single Frame capture</h4>
+                  </Col>
+                  <Col>
+                    <Button
+                      size='sm'
+                      disabled={!cameraStreamRunning}
+                      onClick={() => {
+                        sendSingleCapture();                      
+                      }
+                      }>
+                      Capture Once
+                    </Button>
+                  </Col>
+                </Row>
+              </Col>
+              {/* Rest of the settings */}
+              <Col xs="8">
+                {/* Collect Points for Pose */}
+                <Row>
+                  <Col xs="auto">
+                    <h4>1. Collect points for camera pose calibration</h4>
+                  </Col>
+                  <Col>
+                    <Tooltip id="collect-points-for-pose-button-tooltip" />
+                    <a data-tooltip-hidden={cameraStreamRunning} data-tooltip-variant='error' data-tooltip-id='collect-points-for-pose-button-tooltip' data-tooltip-content="Start camera stream first">
+                      <Button
+                        size='sm'
+                        variant={capturingPointsForPose ? "outline-danger" : "outline-primary"}
+                        disabled={!cameraStreamRunning}
+                        onClick={() => {
+                          setCapturingPointsForPose(!capturingPointsForPose);
+                          capturePointsForPose(capturingPointsForPose ? "stop" : "start");
+                        }
+                        }>
+                        {capturingPointsForPose ? "Stop" : "Start"}
+                      </Button>
+                    </a>
+                  </Col>
+                  <Col xs="3">
+                    <Button
+                      size='sm'
+                      variant="outline-primary"
+                      disabled={!(isValidJson(`[${capturedPointsForPose.slice(0, -1)}]`) && JSON.parse(`[${capturedPointsForPose.slice(0, -1)}]`).length !== 0)}
+                      onClick={() => {
+                        calculateCameraPose(JSON.parse(`[${capturedPointsForPose.slice(0, -1)}]`))
+                      }}>
+                      Calculate Camera Pose with {isValidJson(`[${capturedPointsForPose.slice(0, -1)}]`) ? JSON.parse(`[${capturedPointsForPose.slice(0, -1)}]`).length : 0} points
+                    </Button>
+                  </Col>
+                </Row>
+                {/* Set Scale */}
+                <Row>
+                  <Col xs="auto">
+                    <h4>2. Set Scale Using Two 15cm Markers</h4>
+                  </Col>
+                  <Col>
+                    <Button
+                      size='sm'
+                      variant="outline-primary"
+                      disabled={!isTriangulatingPoints && objectPoints.current.length == 0}
+                      onClick={() => {
+                        socket.emit("determine-scale", { objectPoints: objectPoints.current, cameraPoses: cameraPoses })
+                      }
+                      }>
+                      Run
+                    </Button>
+                  </Col>
+                </Row>
+                {/* Acquire Floor */}
+                <Row>
+                  <Col xs="auto">
+                    <h4>3. Acquire Floor from One Marker</h4>
+                  </Col>
+                  <Col>
+                    <Button
+                      size='sm'
+                      variant="outline-primary"
+                      disabled={!isTriangulatingPoints && objectPoints.current.length == 0}
+                      onClick={() => {
+                        socket.emit("acquire-floor", { objectPoints: objectPoints.current })
+                      }
+                      }>
+                      Run
+                    </Button>
+                  </Col>
+                </Row>
+                {/* Set Origin */}
+                <Row>
+                  <Col xs="auto">
+                    <h4>4. Set Origin from One Marker</h4>
+                  </Col>
+                  <Col>
+                    <Button
+                      size='sm'
+                      variant="outline-primary"
+                      disabled={!isTriangulatingPoints && objectPoints.current.length == 0}
+                      onClick={() => {
+                        socket.emit("set-origin", { objectPoint: objectPoints.current[0][0], toWorldCoordsMatrix })
+                      }
+                      }>
+                      Run
+                    </Button>
+                  </Col>
+                </Row>
+                <Row style={{ height: "15px" }}>
+                </Row>
+                {/* Live Triangulation */}
+                <Row>
+                  <Col xs="auto">
+                    <h4>Live Triangulation</h4>
+                  </Col>
+                  <Col>
+                    <Button
+                      size='sm'
+                      variant={isTriangulatingPoints ? "outline-danger" : "outline-primary"}
+                      disabled={!cameraStreamRunning}
+                      onClick={() => {
+                        if (!isTriangulatingPoints) {
+                          objectPoints.current = []
+                          objectPointErrors.current = []
+                          objects.current = []
+                          filteredObjects.current = []
+                          droneSetpointHistory.current = []
+                        }
+                        setIsTriangulatingPoints(!isTriangulatingPoints);
+                        startLiveMocap(isTriangulatingPoints ? "stop" : "start");
+                      }
+                      }>
+                      {isTriangulatingPoints ? "Stop" : "Start"}
+                    </Button>
+                  </Col>
+                </Row>
+                {/* Locate Objects */}
+                <Row>
+                  <Col xs="auto">
+                    <h4>Locate Objects</h4>
+                  </Col>
+                  <Col>
+                    <Button
+                      size='sm'
+                      variant={isLocatingObjects ? "outline-danger" : "outline-primary"}
+                      disabled={!cameraStreamRunning}
+                      onClick={() => {
+                        setIsLocatingObjects(!isLocatingObjects);
+                        socket.emit("locate-objects", { startOrStop: isLocatingObjects ? "stop" : "start" })
+                      }
+                      }>
+                      {isLocatingObjects ? "Stop" : "Start"}
+                    </Button>
+                  </Col>
+                </Row>
               </Col>
             </Row>
-            <Row>
-              <Col xs="auto">
-                <h4>Live Triangulation</h4>
-              </Col>
-              <Col>
-                <Button
-                  size='sm'
-                  variant={isTriangulatingPoints ? "outline-danger" : "outline-primary"}
-                  disabled={!cameraStreamRunning}
-                  onClick={() => {
-                    if (!isTriangulatingPoints) {
-                      objectPoints.current = []
-                      objectPointErrors.current = []
-                      objects.current = []
-                      filteredObjects.current = []
-                      droneSetpointHistory.current = []
-                    }
-                    setIsTriangulatingPoints(!isTriangulatingPoints);
-                    startLiveMocap(isTriangulatingPoints ? "stop" : "start");
-                  }
-                  }>
-                  {isTriangulatingPoints ? "Stop" : "Start"}
-                </Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs="auto">
-                <h4>Locate Objects</h4>
-              </Col>
-              <Col>
-                <Button
-                  size='sm'
-                  variant={isLocatingObjects ? "outline-danger" : "outline-primary"}
-                  disabled={!cameraStreamRunning}
-                  onClick={() => {
-                    setIsLocatingObjects(!isLocatingObjects);
-                    socket.emit("locate-objects", { startOrStop: isLocatingObjects ? "stop" : "start" })
-                  }
-                  }>
-                  {isLocatingObjects ? "Stop" : "Start"}
-                </Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs="auto">
-                <h4>Set Scale Using Points</h4>
-              </Col>
-              <Col>
-                <Button
-                  size='sm'
-                  variant="outline-primary"
-                  disabled={!isTriangulatingPoints && objectPoints.current.length == 0}
-                  onClick={() => {
-                    socket.emit("determine-scale", { objectPoints: objectPoints.current, cameraPoses: cameraPoses })
-                  }
-                  }>
-                  Run
-                </Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs="auto">
-                <h4>Acquire Floor</h4>
-              </Col>
-              <Col>
-                <Button
-                  size='sm'
-                  variant="outline-primary"
-                  disabled={!isTriangulatingPoints && objectPoints.current.length == 0}
-                  onClick={() => {
-                    socket.emit("acquire-floor", { objectPoints: objectPoints.current })
-                  }
-                  }>
-                  Run
-                </Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs="auto">
-                <h4>Set Origin</h4>
-              </Col>
-              <Col>
-                <Button
-                  size='sm'
-                  variant="outline-primary"
-                  disabled={!isTriangulatingPoints && objectPoints.current.length == 0}
-                  onClick={() => {
-                    socket.emit("set-origin", { objectPoint: objectPoints.current[0][0], toWorldCoordsMatrix })
-                  }
-                  }>
-                  Run
-                </Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs="auto">
-                <h4>Collect points for camera pose calibration</h4>
-              </Col>
-              <Col>
-                <Tooltip id="collect-points-for-pose-button-tooltip" />
-                <a data-tooltip-hidden={cameraStreamRunning} data-tooltip-variant='error' data-tooltip-id='collect-points-for-pose-button-tooltip' data-tooltip-content="Start camera stream first">
-                  <Button
-                    size='sm'
-                    variant={capturingPointsForPose ? "outline-danger" : "outline-primary"}
-                    disabled={!cameraStreamRunning}
-                    onClick={() => {
-                      setCapturingPointsForPose(!capturingPointsForPose);
-                      capturePointsForPose(capturingPointsForPose ? "stop" : "start");
-                    }
-                    }>
-                    {capturingPointsForPose ? "Stop" : "Start"}
-                  </Button>
-                  <Button
-                    size='sm'
-                    disabled={!cameraStreamRunning}
-                    onClick={() => {
-                      setCaptureOnToggle(!CaptureOnToggle);
-                      sendToggleCaptureOn();                      
-                    }
-                    }>
-                    {!CaptureOnToggle ? "On Capture Toggle" : "Off Capture Toggle"}
-                  </Button>
-                  <Button
-                    size='sm'
-                    disabled={!cameraStreamRunning}
-                    onClick={() => {
-                      sendSingleCapture();                      
-                    }
-                    }>
-                    Single Capture Frame
-                  </Button>
-                </a>
-              </Col>
-            </Row>
-            <Row className='pt-3'>
-              <Col>
-                <Button
-                  size='sm'
-                  className='float-end'
-                  variant="outline-primary"
-                  disabled={!(isValidJson(`[${capturedPointsForPose.slice(0, -1)}]`) && JSON.parse(`[${capturedPointsForPose.slice(0, -1)}]`).length !== 0)}
-                  onClick={() => {
-                    calculateCameraPose(JSON.parse(`[${capturedPointsForPose.slice(0, -1)}]`))
-                  }}>
-                  Calculate Camera Pose with {isValidJson(`[${capturedPointsForPose.slice(0, -1)}]`) ? JSON.parse(`[${capturedPointsForPose.slice(0, -1)}]`).length : 0} points
-                </Button>
-              </Col>
-            </Row>
+
+            {/* List of camera Pose for copy */}
             <Row className='pt-3'>
               <Col xs={4} className='pt-2'>
                 Camera Poses:
@@ -573,6 +598,7 @@ export default function App() {
                 />
               </Col>
             </Row>
+            {/* List of World Matrix for copy */}
             <Row>
               <Col xs={4} className='pt-2'>
                 To World Matrix:
@@ -586,616 +612,18 @@ export default function App() {
             </Row>
           </Card>
         </Col>
-        <Col xs={4}>
-          <Card className='shadow-sm p-3 h-100'>
-            <Row>
-              <Col>
-                <h4>Generate Trajectory</h4>
-              </Col>
-            </Row>
-            <Row className='pt-1'>
-              <Col xs={{ offset: 3 }} className='text-center'>
-                X
-              </Col>
-              <Col className='text-center'>
-                Y
-              </Col>
-              <Col className='text-center'>
-                Z
-              </Col>
-            </Row>
-            <Row className='pt-2'>
-              <Col xs={3} className='pt-2 text-end'>
-                Max Vel
-              </Col>
-              <Col>
-                <Form.Control
-                  value={trajectoryPlanningMaxVel[0]}
-                  onChange={(event) => {
-                    let newTrajectoryPlanningMaxVel = trajectoryPlanningMaxVel.slice()
-                    newTrajectoryPlanningMaxVel[0] = event.target.value
-                    setTrajectoryPlanningMaxVel(newTrajectoryPlanningMaxVel)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={trajectoryPlanningMaxVel[1]}
-                  onChange={(event) => {
-                    let newTrajectoryPlanningMaxVel = trajectoryPlanningMaxVel.slice()
-                    newTrajectoryPlanningMaxVel[1] = event.target.value
-                    setTrajectoryPlanningMaxVel(newTrajectoryPlanningMaxVel)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={trajectoryPlanningMaxVel[2]}
-                  onChange={(event) => {
-                    let newTrajectoryPlanningMaxVel = trajectoryPlanningMaxVel.slice()
-                    newTrajectoryPlanningMaxVel[2] = event.target.value
-                    setTrajectoryPlanningMaxVel(newTrajectoryPlanningMaxVel)
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row className='pt-2'>
-              <Col xs={3} className='pt-2 text-end'>
-                Max Accel
-              </Col>
-              <Col>
-                <Form.Control
-                  value={trajectoryPlanningMaxAccel[0]}
-                  onChange={(event) => {
-                    let newTrajectoryPlanningMaxAccel = trajectoryPlanningMaxAccel.slice()
-                    newTrajectoryPlanningMaxAccel[0] = event.target.value
-                    setTrajectoryPlanningMaxAccel(newTrajectoryPlanningMaxAccel)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={trajectoryPlanningMaxAccel[1]}
-                  onChange={(event) => {
-                    let newTrajectoryPlanningMaxAccel = trajectoryPlanningMaxAccel.slice()
-                    newTrajectoryPlanningMaxAccel[1] = event.target.value
-                    setTrajectoryPlanningMaxAccel(newTrajectoryPlanningMaxAccel)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={trajectoryPlanningMaxAccel[2]}
-                  onChange={(event) => {
-                    let newTrajectoryPlanningMaxAccel = trajectoryPlanningMaxAccel.slice()
-                    newTrajectoryPlanningMaxAccel[2] = event.target.value
-                    setTrajectoryPlanningMaxAccel(newTrajectoryPlanningMaxAccel)
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row className='pt-2'>
-              <Col xs={3} className='pt-2 text-end'>
-                Max Jerk
-              </Col>
-              <Col>
-                <Form.Control
-                  value={trajectoryPlanningMaxJerk[0]}
-                  onChange={(event) => {
-                    let newTrajectoryPlanningMaxJerk = trajectoryPlanningMaxJerk.slice()
-                    newTrajectoryPlanningMaxJerk[0] = event.target.value
-                    setTrajectoryPlanningMaxJerk(newTrajectoryPlanningMaxJerk)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={trajectoryPlanningMaxJerk[1]}
-                  onChange={(event) => {
-                    let newTrajectoryPlanningMaxJerk = trajectoryPlanningMaxJerk.slice()
-                    newTrajectoryPlanningMaxJerk[1] = event.target.value
-                    setTrajectoryPlanningMaxJerk(newTrajectoryPlanningMaxJerk)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={trajectoryPlanningMaxJerk[2]}
-                  onChange={(event) => {
-                    let newTrajectoryPlanningMaxJerk = trajectoryPlanningMaxJerk.slice()
-                    newTrajectoryPlanningMaxJerk[2] = event.target.value
-                    setTrajectoryPlanningMaxJerk(newTrajectoryPlanningMaxJerk)
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row className='pt-3'>
-              <Col>
-                Waypoints <code>[drone index, x, y, z, stop at waypoint]</code>
-              </Col>
-            </Row>
-            <Row className='pt-1'>
-              <Col>
-                <Form.Control
-                  as="textarea"
-                  rows={5}
-                  value={trajectoryPlanningWaypoints}
-                  onChange={(event) => setTrajectoryPlanningWaypoints(event.target.value)}
-                />
-              </Col>
-            </Row>
-            <Row className='pt-3'>
-              <Col>
-                <Button
-                  size='sm'
-                  className='float-end'
-                  variant={droneArmed ? "outline-danger" : "outline-primary"}
-                  onClick={async () => {
-                    setMotionPreset(new Array(NUM_DRONES).fill("none"))
-                    const initPos = JSON.parse(trajectoryPlanningWaypoints)[0].slice(0, 3)
-                    await Promise.all(Array.from(Array(NUM_DRONES).keys()).map(async (droneIndex) => {
-                      await moveToPos(initPos, droneIndex)
-                    }))
-                    setTrajectoryPlanningRunStartTimestamp(Date.now() / 1000)
-                    setMotionPreset(new Array(NUM_DRONES).fill("plannedTrajectory"))
-                  }}
-                >
-                  Run
-                </Button>
-                <Button
-                  size='sm'
-                  className='float-end me-2'
-                  variant={droneArmed ? "outline-danger" : "outline-primary"}
-                  onClick={async () => {
-                    const tempSetpoints = await planTrajectory(
-                      JSON.parse(trajectoryPlanningWaypoints),
-                      trajectoryPlanningMaxVel.map(x => parseFloat(x)),
-                      trajectoryPlanningMaxAccel.map(x => parseFloat(x)),
-                      trajectoryPlanningMaxJerk.map(x => parseFloat(x)),
-                      TRAJECTORY_PLANNING_TIMESTEP
-                    )
-                    setTrajectoryPlanningSetpoints(tempSetpoints)
-                  }}
-                >
-                  Preview
-                </Button>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-        <Col xs={4}>
-          <Card className='shadow-sm p-3 h-100'>
+
+        {/* This column contains scene viewer and chart */}
+        <Col xs="6">
+          <Card className='shadow-sm p-3'>
+            {/* Title and content for scene viewer */}
             <Row>
               <Col xs="auto">
-                <h4>Control Drone</h4>
-              </Col>
-              <Col xs="3">
-                <Form.Select value={currentDroneIndex} onChange={(e) => setCurrentDroneIndex(parseInt(e.target.value))} size='sm'>
-                  <option value="0">Drone 0</option>
-                  <option value="1">Drone 1</option>
-                </Form.Select>
-              </Col>
-            </Row>
-            {Array.from(Array(NUM_DRONES).keys()).map((droneIndex) => (
-              <>
-                <Row className='pt-4'>
-                  <Col xs="3">
-                    <h5>Drone {droneIndex}</h5>
-                  </Col>
-                  <Col className='text-center'>
-                    X
-                  </Col>
-                  <Col className='text-center'>
-                    Y
-                  </Col>
-                  <Col className='text-center'>
-                    Z
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={3} className='pt-2'>
-                    Setpoint
-                  </Col>
-                  <Col>
-                    <Form.Control
-                      value={droneSetpoint[droneIndex][0]}
-                      onChange={(event) => {
-                        let newDroneSetpoint = droneSetpoint.slice()
-                        newDroneSetpoint[droneIndex][0] = event.target.value
-                        setDroneSetpoint(newDroneSetpoint)
-                      }}
-                    />
-                  </Col>
-                  <Col>
-                    <Form.Control
-                      value={droneSetpoint[droneIndex][1]}
-                      onChange={(event) => {
-                        let newDroneSetpoint = droneSetpoint.slice()
-                        newDroneSetpoint[droneIndex][1] = event.target.value
-                        setDroneSetpoint(newDroneSetpoint)
-                      }}
-                    />
-                  </Col>
-                  <Col>
-                    <Form.Control
-                      value={droneSetpoint[droneIndex][2]}
-                      onChange={(event) => {
-                        let newDroneSetpoint = droneSetpoint.slice()
-                        newDroneSetpoint[droneIndex][2] = event.target.value
-                        setDroneSetpoint(newDroneSetpoint)
-                      }}
-                    />
-                  </Col>
-                </Row>
-                <Row className='pt-3'>
-                  <Col>
-                    <Button
-                      size='sm'
-                      variant={droneArmed[droneIndex] ? "outline-danger" : "outline-primary"}
-                      disabled={!isTriangulatingPoints}
-                      onClick={() => {
-                        let newDroneArmed = droneArmed.slice()
-                        newDroneArmed[droneIndex] = !newDroneArmed[droneIndex]
-                        setDroneArmed(newDroneArmed);
-                      }
-                      }>
-                      {droneArmed[droneIndex] ? "Disarm" : "Arm"}
-                    </Button>
-                  </Col>
-                  <Col>
-                    <Button
-                      size='sm'
-                      onClick={() => {
-                        let newMotionPreset = motionPreset.slice()
-                        newMotionPreset[droneIndex] = "setpoint"
-                        setMotionPreset(newMotionPreset);
-                      }
-                      }>
-                      Setpoint
-                    </Button>
-                  </Col>
-                  <Col>
-                    <Button
-                      size='sm'
-                      onClick={() => {
-                        let newMotionPreset = motionPreset.slice()
-                        newMotionPreset[droneIndex] = "circle"
-                        setMotionPreset(newMotionPreset);
-                      }
-                      }>
-                      Circle
-                    </Button>
-                  </Col>
-                  <Col>
-                    <Button
-                      size='sm'
-                      onClick={() => {
-                        let newMotionPreset = motionPreset.slice()
-                        newMotionPreset[droneIndex] = "square"
-                        setMotionPreset(newMotionPreset);
-                      }
-                      }>
-                      Square
-                    </Button>
-                  </Col>
-                  <Col>
-                    <Button
-                      size='sm'
-                      onClick={async () => {
-                        await moveToPos([0, 0, LAND_Z_HEIGHT], droneIndex)
-
-                        let newDroneArmed = droneArmed.slice()
-                        newDroneArmed[droneIndex] = false
-                        setDroneArmed(newDroneArmed);
-
-                        let newMotionPreset = motionPreset.slice()
-                        newMotionPreset[droneIndex] = "setpoint"
-                        setMotionPreset(newMotionPreset);
-                      }
-                      }>
-                      Land
-                    </Button>
-                  </Col>
-                </Row>
-              </>
-            ))}
-            <Row className='pt-3'>
-              <Col xs={{ offset: 2 }} className='text-center'>
-                Pos P
-              </Col>
-              <Col className='text-center'>
-                Pos I
-              </Col>
-              <Col className='text-center'>
-                Pos D
-              </Col>
-            </Row>
-            <Row className='pt-2'>
-              <Col xs={2} className='pt-2 text-end'>
-                XY
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[0]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[0] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[1]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[1] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[2]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[2] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row className='pt-3'>
-              <Col xs={2} className='pt-2 text-end'>
-                Z
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[3]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[3] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[4]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[4] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[5]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[5] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row className='pt-3'>
-              <Col xs={2} className='pt-2 text-end'>
-                YAW
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[6]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[6] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[7]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[7] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[8]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[8] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row className='pt-3'>
-              <Col xs={{ offset: 2 }} className='text-center'>
-                Vel P
-              </Col>
-              <Col className='text-center'>
-                Vel I
-              </Col>
-              <Col className='text-center'>
-                Vel D
-              </Col>
-            </Row>
-            <Row className='pt-2'>
-              <Col xs={2} className='pt-2 text-end'>
-                XY
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[9]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[9] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[10]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[10] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[11]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[11] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-            </Row>
-            <Row className='pt-3'>
-              <Col xs={2} className='pt-2 text-end'>
-                Z
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[12]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[12] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[13]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[13] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[14]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[14] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
+                <h4>Scene Viewer {objectPointErrors.current.length !== 0 ? mean(objectPointErrors.current.flat()) : ""}</h4>
               </Col>
             </Row>
             <Row>
-              <Col>
-                <Row className="mt-3 mb-1">
-                  <Col xs={4}>
-                    <Form.Label>X Trim: {droneTrim[0]}</Form.Label>
-                  </Col>
-                  <Col>
-                    <Form.Range value={droneTrim[0]} min={-800} max={800} onChange={(event) => {
-                      let newDroneTrim = droneTrim.slice()
-                      newDroneTrim[0] = event.target.value
-                      setDroneTrim(newDroneTrim)
-                    }} />
-                  </Col>
-                </Row>
-                <Row className="mb-1">
-                  <Col xs={4}>
-                    <Form.Label>Y Trim: {droneTrim[1]}</Form.Label>
-                  </Col>
-                  <Col>
-                    <Form.Range value={droneTrim[1]} min={-800} max={800} onChange={(event) => {
-                      let newDroneTrim = droneTrim.slice()
-                      newDroneTrim[1] = event.target.value
-                      setDroneTrim(newDroneTrim)
-                    }} />
-                  </Col>
-                </Row>
-                <Row className="mb-1">
-                  <Col xs={4}>
-                    <Form.Label>Z Trim: {droneTrim[2]}</Form.Label>
-                  </Col>
-                  <Col>
-                    <Form.Range value={droneTrim[2]} min={-800} max={800} onChange={(event) => {
-                      let newDroneTrim = droneTrim.slice()
-                      newDroneTrim[2] = event.target.value
-                      setDroneTrim(newDroneTrim)
-                    }} />
-                  </Col>
-                </Row>
-                <Row className="mb-1">
-                  <Col xs={4}>
-                    <Form.Label>Yaw Trim: {droneTrim[3]}</Form.Label>
-                  </Col>
-                  <Col>
-                    <Form.Range value={droneTrim[3]} min={-800} max={800} onChange={(event) => {
-                      let newDroneTrim = droneTrim.slice()
-                      newDroneTrim[3] = event.target.value
-                      setDroneTrim(newDroneTrim)
-                    }} />
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-            <Row className='pt-3'>
-              <Col className='pt-2'>
-                Ground Effect Coef.
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[15]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[15] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-              <Col className='pt-2'>
-                Ground Effect Offset
-              </Col>
-              <Col>
-                <Form.Control
-                  value={dronePID[16]}
-                  onChange={(event) => {
-                    let newDronePID = dronePID.slice()
-                    newDronePID[16] = event.target.value
-                    setDronePID(newDronePID)
-                  }}
-                />
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-      </Row>
-      <Row className='pt-3'>
-        <Col>
-          <Card className='shadow-sm p-3'>
-            <Chart filteredObjectsRef={filteredObjects} droneSetpointHistoryRef={droneSetpointHistory} objectPointCount={objectPointCount} dronePID={dronePID.map(x => parseFloat(x))} droneArmed={droneArmed} currentDroneIndex={currentDroneIndex} />
-          </Card>
-        </Col>
-      </Row>
-      <Row className='pt-3'>
-        <Col>
-          <Card className='shadow-sm p-3'>
-            <Row>
-              <Col xs="auto">
-                {/* <h4>Scene Viewer {objectPointErrors.current.length !== 0 ? mean(objectPointErrors.current.flat()) : ""}</h4> */}
-              </Col>
-            </Row>
-            <Row>
-              <Col style={{ height: "1000px" }}>
+              <Col style={{ height: "600px" }}>
                 <Canvas orthographic camera={{ zoom: 1000, position: [0, 0, 10] }}>
                   <ambientLight />
                   {cameraPoses.map(({ R, t }, i) => (
@@ -1209,6 +637,13 @@ export default function App() {
                   <gridHelper args={[4, 4 * 10]} />
                   <directionalLight />
                 </Canvas>
+              </Col>
+            </Row>
+
+            {/* Content for chart */}
+            <Row className='pt-3'>
+              <Col>
+                <Chart filteredObjectsRef={filteredObjects} droneSetpointHistoryRef={droneSetpointHistory} objectPointCount={objectPointCount} dronePID={dronePID.map(x => parseFloat(x))} droneArmed={droneArmed} currentDroneIndex={currentDroneIndex} />
               </Col>
             </Row>
           </Card>
