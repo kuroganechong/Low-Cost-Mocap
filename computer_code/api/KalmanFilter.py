@@ -53,14 +53,14 @@ class KalmanFilter:
         dt = time.time() - self.prev_measurement_time
         self.prev_measurement_time = time.time()
 
-        for drone_index in range(0, self.num_objects):
-            possible_new_objects = [object for object in objects if object["droneIndex"] == drone_index]
+        for index in range(0, self.num_objects):
+            possible_new_objects = [object for object in objects if object["index"] == index]
             possible_new_positions = [x["pos"] for x in possible_new_objects]
 
             if len(possible_new_objects) == 0:
                 continue
 
-            kalman = self.kalmans[drone_index]
+            kalman = self.kalmans[index]
 
             kalman.transitionMatrix[:3, 3:6] = dt * np.eye(3)
             kalman.transitionMatrix[3:6, 6:9] = dt * np.eye(3)
@@ -76,25 +76,25 @@ class KalmanFilter:
             distances_to_predicted_location = np.sqrt(np.sum((possible_new_positions - predicted_location)**2, axis=1))
             closest_match_i = np.argmin(distances_to_predicted_location)
             new_pos = possible_new_positions[closest_match_i].astype(np.float32)
-            new_vel = ((new_pos - self.prev_positions[drone_index]) / dt).astype(np.float32)
-            self.prev_positions[drone_index] = new_pos
+            new_vel = ((new_pos - self.prev_positions[index]) / dt).astype(np.float32)
+            self.prev_positions[index] = new_pos
 
             kalman.correct(np.concatenate((new_pos, new_vel)))
             predicted_state = kalman.statePre[:6].T[0]  # Predicted 3D location
 
             heading = possible_new_objects[closest_match_i]["heading"]
-            heading = self.heading_low_pass_filter[drone_index].filter(heading)[0]
+            heading = self.heading_low_pass_filter[index].filter(heading)[0]
             # heading, self.z = signal.lfilter(self.b, 1, [heading], zi=self.z)
 
             vel = predicted_state[3:6].copy()
-            vel[0:2] = self.low_pass_filter_xy[drone_index].filter(vel[0:2])
-            vel[2] = self.low_pass_filter_z[drone_index].filter(vel[2])[0]
+            vel[0:2] = self.low_pass_filter_xy[index].filter(vel[0:2])
+            vel[2] = self.low_pass_filter_z[index].filter(vel[2])[0]
             
             res.append({
                 "pos": predicted_state[:3],
                 "vel": vel,
                 "heading": heading,
-                "droneIndex": drone_index
+                "index": index
             })
 
         return res

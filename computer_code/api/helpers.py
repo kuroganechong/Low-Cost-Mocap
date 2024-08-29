@@ -45,7 +45,7 @@ class Cameras:
 
         self.to_world_coords_matrix = None
 
-        self.drone_armed = []
+        # self.drone_armed = []
 
         self.num_objects = None
 
@@ -70,7 +70,7 @@ class Cameras:
 
     def set_num_objects(self, num_objects):
         self.num_objects = num_objects
-        self.drone_armed = [False for i in range(0, self.num_objects)]
+        # self.drone_armed = [False for i in range(0, self.num_objects)]
     
     def edit_settings(self, exposure, gain):
         # self.cameras.exposure = [exposure] * self.num_cameras
@@ -131,16 +131,16 @@ class Cameras:
                         
                         if len(filtered_objects) != 0:
                             for filtered_object in filtered_objects:
-                                if self.drone_armed[filtered_object['droneIndex']]:
-                                    filtered_object["heading"] = round(filtered_object["heading"], 4)
+                                
+                                filtered_object["heading"] = round(filtered_object["heading"], 4)
 
-                                    serial_data = { 
-                                        "pos": [round(x, 4) for x in filtered_object["pos"].tolist()] + [filtered_object["heading"]],
-                                        "vel": [round(x, 4) for x in filtered_object["vel"].tolist()]
-                                    }
-                                    with self.serialLock:
-                                        self.ser.write(f"{filtered_object['droneIndex']}{json.dumps(serial_data)}".encode('utf-8'))
-                                        time.sleep(0.001)
+                                # serial_data = { 
+                                #     "pos": [round(x, 4) for x in filtered_object["pos"].tolist()] + [filtered_object["heading"]],
+                                #     "vel": [round(x, 4) for x in filtered_object["vel"].tolist()]
+                                # }
+                                # with self.serialLock:
+                                #     self.ser.write(f"{filtered_object['droneIndex']}{json.dumps(serial_data)}".encode('utf-8'))
+                                #     time.sleep(0.001)
                             
                         for filtered_object in filtered_objects:
                             filtered_object["vel"] = filtered_object["vel"].tolist()
@@ -492,13 +492,13 @@ def locate_objects(object_points, errors):
                 heading = heading + np.pi if heading < -np.pi/2 else heading
 
                 # determine drone index based on which side third light is on
-                drone_index = 0 if (object_points[i] - location)[1] > 0 else 1
+                object_index = 0 if (object_points[i] - location)[1] > 0 else 1
 
                 objects.append({
                     "pos": location,
                     "heading": -heading,
                     "error": error,
-                    "droneIndex": drone_index
+                    "index": object_index
                 })
 
                 break

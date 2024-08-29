@@ -1,5 +1,5 @@
 import { matrix, multiply, transpose } from "mathjs";
-import { BufferAttribute, BufferGeometry, EdgesGeometry, LineBasicMaterial, LineSegments } from "three";
+import { BufferAttribute, BufferGeometry, EdgesGeometry, LineBasicMaterial } from "three";
 
 export default function CameraWireframe({R, t, toWorldCoordsMatrix}: {R: Array<Array<number>>, t: Array<number>, toWorldCoordsMatrix: number[][]}) {
   const vertices = [

@@ -141,13 +141,11 @@ def toggle_capture_on(data):
     
     cameras.set_toggle_capture_on()
 
-
 @socketio.on("single-capture")
 def toggle_capture_on(data):
     cameras = Cameras.instance()
     
     cameras.set_single_capture()
-
 
 @socketio.on("capture-points")
 def capture_points(data):
@@ -254,108 +252,6 @@ def live_mocap(data):
         return
     elif (start_or_stop == "stop"):
         cameras.stop_trangulating_points()
-
-
-# IRRELEVANT
-@app.route("/api/trajectory-planning", methods=["POST"])
-def trajectory_planning_api():
-    data = json.loads(request.data)
-
-    waypoint_groups = [] # grouped by continuious movement (no stopping)
-    for waypoint in data["waypoints"]:
-        stop_at_waypoint = waypoint[-1]
-        if stop_at_waypoint:
-            waypoint_groups.append([waypoint[:3*num_objects]])
-        else:
-            waypoint_groups[-1].append(waypoint[:3*num_objects])
-    
-    setpoints = []
-    for i in range(0, len(waypoint_groups)-1):
-        start_pos = waypoint_groups[i][0]
-        end_pos = waypoint_groups[i+1][0]
-        waypoints = waypoint_groups[i][1:]
-        setpoints += plan_trajectory(start_pos, end_pos, waypoints, data["maxVel"], data["maxAccel"], data["maxJerk"], data["timestep"])
-
-    return json.dumps({
-        "setpoints": setpoints
-    })
-
-# IRRELEVANT
-def plan_trajectory(start_pos, end_pos, waypoints, max_vel, max_accel, max_jerk, timestep):
-    otg = Ruckig(3*num_objects, timestep, len(waypoints))  # DoFs, timestep, number of waypoints
-    inp = InputParameter(3*num_objects)
-    out = OutputParameter(3*num_objects, len(waypoints))
-
-    inp.current_position = start_pos
-    inp.current_velocity = [0,0,0]*num_objects
-    inp.current_acceleration = [0,0,0]*num_objects
-
-    inp.target_position = end_pos
-    inp.target_velocity = [0,0,0]*num_objects
-    inp.target_acceleration = [0,0,0]*num_objects
-
-    inp.intermediate_positions = waypoints
-
-    inp.max_velocity = max_vel*num_objects
-    inp.max_acceleration = max_accel*num_objects
-    inp.max_jerk = max_jerk*num_objects
-
-    setpoints = []
-    res = Result.Working
-    while res == Result.Working:
-        res = otg.update(inp, out)
-        setpoints.append(copy.copy(out.new_position))
-        out.pass_to_input(inp)
-
-    return setpoints
-
-# IRRELEVANT
-@socketio.on("arm-drone")
-def arm_drone(data):
-    global cameras_init
-    if not cameras_init:
-        return
-    
-    Cameras.instance().drone_armed = data["droneArmed"]
-    for droneIndex in range(0, num_objects):
-        serial_data = {
-            "armed": data["droneArmed"][droneIndex],
-        }
-        # with serialLock:
-            # ser.write(f"{str(droneIndex)}{json.dumps(serial_data)}".encode('utf-8'))
-        
-        # time.sleep(0.01)
-
-# IRRELEVANT
-@socketio.on("set-drone-pid")
-def arm_drone(data):
-    serial_data = {
-        "pid": [float(x) for x in data["dronePID"]],
-    }
-    # with serialLock:
-        # ser.write(f"{str(data['droneIndex'])}{json.dumps(serial_data)}".encode('utf-8'))
-        # time.sleep(0.01)
-
-# IRRELEVANT
-@socketio.on("set-drone-setpoint")
-def arm_drone(data):
-    serial_data = {
-        "setpoint": [float(x) for x in data["droneSetpoint"]],
-    }
-    # with serialLock:
-        # ser.write(f"{str(data['droneIndex'])}{json.dumps(serial_data)}".encode('utf-8'))
-        # time.sleep(0.01)
-
-# IRRELEVANT
-@socketio.on("set-drone-trim")
-def arm_drone(data):
-    serial_data = {
-        "trim": [int(x) for x in data["droneTrim"]],
-    }
-    # with serialLock:
-        # ser.write(f"{str(data['droneIndex'])}{json.dumps(serial_data)}".encode('utf-8'))
-        # time.sleep(0.01)
-
 
 if __name__ == '__main__':
     socketio.run(app, port=3001, debug=True)
