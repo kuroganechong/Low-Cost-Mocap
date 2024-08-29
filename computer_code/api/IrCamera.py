@@ -38,15 +38,41 @@ class IrCamera:
 
     def autoscan_cameras(self):
         """Autoscan and connect cameras. Return camera ids"""
+        openedFirst = False
+        isEven = True
         ids = []
         cameras = []
         for i in range(10):
-            cap = cv.VideoCapture(i)
-            if cap.isOpened():
-                ids.append(i)
-                cameras.append(cap)
+            # The first opened camera index is even, meaning subsequent cameras will be even
+            if openedFirst and isEven:
+                if i % 2 == 0:
+                    # Only open even cameras
+                    cap = cv.VideoCapture(i)
+                    if cap.isOpened():
+                        ids.append(i)
+                        cameras.append(cap)
+                    else:
+                        cap.release()
+            # The first opened camera index is odd, meaning subsequent cameras will be odd
+            elif openedFirst and not isEven:
+                if i % 2 != 0:
+                    # Only open odd cameras
+                    cap = cv.VideoCapture(i)
+                    if cap.isOpened():
+                        ids.append(i)
+                        cameras.append(cap)
+                    else:
+                        cap.release()
             else:
-                cap.release()
+                # Proceed to open first camera
+                cap = cv.VideoCapture(i)
+                if cap.isOpened():
+                    ids.append(i)
+                    cameras.append(cap)
+                    openedFirst = True
+                    isEven = i % 2 == 0
+                else:
+                    cap.release()
 
         return ids, cameras
 

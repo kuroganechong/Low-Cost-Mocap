@@ -31,7 +31,7 @@ class Cameras:
         # self.num_cameras = len(self.cameras.exposure)
         self.cameras = IrCamera(resolution=resolution, fps=fps)
         self.num_cameras = len(self.cameras.ids)
-        print(self.num_cameras)
+        print("{} cameras connected".format(self.num_cameras))
 
         self.toggle_capture_on = False
         self.single_capture = False
