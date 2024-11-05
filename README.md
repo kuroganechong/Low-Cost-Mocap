@@ -1,5 +1,61 @@
 # Low Cost Mocap (for drones)
 
+#### _BingSheng Changes_
+
+### Overview
+The camera driver has been modified to use USB cameras instead of the PSPeye. This change utilizes **OpenCV** with **Video4Linux2** as the backend to communicate with the cameras. To check the camera status, you may optionally install the required package with the following command:
+
+```bash
+sudo apt install v4l-utils
+```
+
+The modifications are organized into two main sections:
+1. **Camera Calibration** (in `_Camera Params`) – Handles intrinsic parameters for the new cameras.
+2. **Mocap Backend** (in `computer_code/api`) – Implements the motion capture system backend.
+   
+Additionally, some visual modifications have been made in `computer_code/src` to enhance the user interface for a more intuitive appearance.
+
+---
+
+### 1. Camera Calibration
+
+To calibrate the camera, follow these steps:
+
+- First, review the following **introductory files** for a better understanding of the calibration process:
+    - `_How to Setup OpenCV`
+    - `_How to get world coordinates`
+    - `_Getting Camera Params`
+  
+- Use the **calibration scripts** to generate the optimal intrinsic properties for the camera. This is typically necessary when switching to new cameras or after any changes to existing cameras.
+
+---
+
+### 2. Mocap Backend
+
+The mocap backend has been updated as follows:
+
+- **Modified Files:**
+    - `index.py` – Main file for the mocap backend.
+    - `IrCamera.py` – Camera driver code.
+    - `helpers.py` – Data processing for the motion capture system.
+
+- **Calibration Process:**
+    - To calibrate the system for a new camera layout, follow the GUI instructions. 
+    - Use a **single LED marker** for initial calibration, followed by **two LED markers** with a fixed spacing (e.g., 15cm or another spacing specified in the code).
+    - Once calibration is complete, you can track objects using a **three-marker setup**.
+
+Read through the code to understand how the system works and how it integrates with the calibration and mocap tracking processes.
+
+### Future work
+1. Buy Network Video Recorder and IP cameras to make the system portable. Cameras should work at 850nm or 940nm infrared.
+2. Modify the camera driver to work with new cameras, along with all the calibrations.
+3. Simplify the setup using VICON wand (it has fixed distances for scale calibration)
+4. Test cameras outdoors, possibly need some thresholding as outdoor environment is bright in IR range.
+
+---
+
+#### _Below is the original forked README._
+
 ### A general purpose motion capture system built from the ground up, used to autonomously fly multiple drones indoors
 
 ## YouTube Video

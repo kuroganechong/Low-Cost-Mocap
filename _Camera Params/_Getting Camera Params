@@ -1,11 +1,11 @@
+Follow https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html
+
 First, prepare a chessboard in front of the camera. Must be lit, 9x6
 
-Use captureimage.py to generate a calibration image file. Make sure to select the correct camera in code, and Press Q to capture image
+Use _calib_captureImageForCalib.py and dance the chessboard in front of the camera to capture a calibration image file. Make sure to select the correct camera in code, and Press Q to capture image. Images will be saved in a subfolder. Collect about 20 samples.
 
-Then, run cameraCalibration.py and dance the chessboard in front of the camera. Make sure to select the correct camera in code, collect about 20 samples
+Then, run _calib_findCheckerboard.py on the captured images and make sure a checkerboard can be found in each image. Filter out bad images. (_calib_matchImagesInFolder.py is a helper script to do so)
 
-After that, use reprojectionError.py to verify the undistort looks good on the calibration image file.
-
-Finally, copy the last entry in each of the four csv file into bestParams.py for record purposes.
+After that, use _calib_calculateMatrix.py to calculate the intrinsic parameters. Copy to _calib_bestParams.py for record.
 
 These params for each camera will be input into the camera-params.json for the main project
